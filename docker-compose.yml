@@ -1,0 +1,47 @@
+version: '3.3'
+
+services:
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    ports:
+      - "8083:8083"
+      - "8086:8086"
+      - "8090:8090"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_BUCKET=sensors
+      - DOCKER_INFLUXDB_INIT_USERNAME=telegraf
+      - DOCKER_INFLUXDB_INIT_PASSWORD=telegraf
+      - DOCKER_INFLUXDB_INIT_ORG=ProjectOWL
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mytoken
+    volumes:
+      - "influxdb-storage:/var/lib/influxdb2:z"
+
+  telegraf:
+    image: telegraf:latest
+    container_name: telegraf
+    environment:
+      - INFLUX_TOKEN=mytoken
+    links:
+      - influxdb
+    depends_on:
+      - influxdb
+      - mosquitto
+    volumes:
+      - "./mytelegraf.conf:/etc/telegraf/telegraf.conf:z"
+
+  mosquitto:
+      image: eclipse-mosquitto
+      hostname: mosquitto
+      container_name: mosquitto
+      ports:
+        - "1883:1883"
+        - "9001:9001"
+      depends_on:
+        - influxdb
+      volumes:
+        - "./mosquitto.conf:/mosquitto/config/mosquitto.conf:z"
+      user: "1000:1000"
+volumes:
+  influxdb-storage:
