@@ -23,6 +23,7 @@ services:
     container_name: telegraf
     environment:
       - INFLUX_TOKEN=mytoken
+      - NVIDIASMI=/usr/bin/nvidia-smi
     links:
       - influxdb
     depends_on:
@@ -30,6 +31,7 @@ services:
       - mosquitto
     volumes:
       - "./mytelegraf.conf:/etc/telegraf/telegraf.conf:z"
+      - "C:\\Program Files\\NVIDIA Corporation\\NVSMI:/usr/bin/nvidia-smi"
 
   mosquitto:
       image: eclipse-mosquitto
