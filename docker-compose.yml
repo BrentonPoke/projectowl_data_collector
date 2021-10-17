@@ -18,20 +18,17 @@ services:
     volumes:
       - "influxdb-storage:/var/lib/influxdb2:z"
 
-  telegraf:
-    image: telegraf:latest
-    container_name: telegraf
-    environment:
-      - INFLUX_TOKEN=mytoken
-      - NVIDIASMI=/usr/bin/nvidia-smi
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
     links:
       - influxdb
     depends_on:
       - influxdb
-      - mosquitto
     volumes:
-      - "./mytelegraf.conf:/etc/telegraf/telegraf.conf:z"
-      - "C:\\Program Files\\NVIDIA Corporation\\NVSMI:/usr/bin/nvidia-smi"
+      - "grafana-storage:/var/lib/grafana:z"
 
   mosquitto:
       image: eclipse-mosquitto
@@ -47,3 +44,4 @@ services:
       user: "1000:1000"
 volumes:
   influxdb-storage:
+  grafana-storage:
