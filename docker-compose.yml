@@ -1,5 +1,4 @@
 version: '3.3'
-
 services:
   influxdb:
     image: influxdb:latest
@@ -18,18 +17,18 @@ services:
     volumes:
       - "influxdb-storage:/var/lib/influxdb2:z"
 
-  telegraf:
-    image: telegraf:latest
-    container_name: telegraf
-    environment:
-      - INFLUX_TOKEN=mytoken
-    links:
-      - influxdb
-    depends_on:
-      - influxdb
-      - mosquitto
-    volumes:
-      - "./mytelegraf.conf:/etc/telegraf/telegraf.conf:z"
+#  telegraf:
+#    image: telegraf:latest
+#    container_name: telegraf
+#    environment:
+#      - INFLUX_TOKEN=mytoken
+#    links:
+#      - influxdb
+#    depends_on:
+#      - influxdb
+#      - mosquitto
+#    volumes:
+#      - "./mytelegraf.conf:/etc/telegraf/telegraf.conf:z"
 
   mosquitto:
       image: eclipse-mosquitto
