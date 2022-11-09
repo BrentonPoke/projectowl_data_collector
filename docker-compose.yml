@@ -16,7 +16,6 @@ services:
       - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=mytoken
     volumes:
       - "influxdb-storage:/var/lib/influxdb2:z"
-
 #  telegraf:
 #    image: telegraf:latest
 #    container_name: telegraf
@@ -29,7 +28,6 @@ services:
 #      - mosquitto
 #    volumes:
 #      - "./mytelegraf.conf:/etc/telegraf/telegraf.conf:z"
-
   mosquitto:
       image: eclipse-mosquitto
       hostname: mosquitto
@@ -42,5 +40,7 @@ services:
       volumes:
         - "./mosquitto.conf:/mosquitto/config/mosquitto.conf:z"
       user: "1000:1000"
+
 volumes:
   influxdb-storage:
+  grafana-storage:
